@@ -104,7 +104,7 @@ def main():
 
     # sort Q and add dummy tuple
     Q.sort()
-    Q = [(-1, -1, -1)] + Q
+    Q = [(0, -1, -1)] + Q
 
     for k, (y2, x1, x4) in tqdm(list(enumerate(Q))):
         if k > 0:
