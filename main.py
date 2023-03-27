@@ -84,46 +84,46 @@ def main():
         x1, _, _, x4 = Ik
         y1,  y2, _, y4 = Dk
         if y1 == 0:
-            P.append(x1)
+            P.append((x1, y1))
         if y4 == 0:
-            P.append(x4)
-        Q.append((y2, x1, x4))
+            P.append((x4, y4))
+        Q.append((y2, x1, x4, y1, y4))
 
     P.sort()
-    x2e = dict()
-    e2x = defaultdict(list)
-    for e, x in enumerate(P):
-        x2e[x] = e
-        e2x[e].append(x)
+    xy2e = dict()
+    e2xy = defaultdict(list)
+    for e, (x, y) in enumerate(P):
+        xy2e[(x, y)] = e
+        e2xy[e].append((x, y))
 
-    x2i = defaultdict(list)
+    xy2i = defaultdict(list)
     for i in range(n):
-        x2i[P[i2e[i]]].append(i)
+        xy2i[P[i2e[i]]].append(i)
 
     colors = matplotlib.colormaps['tab20'].colors
 
     # sort Q and add dummy tuple
     Q.sort()
-    Q = [(0, -1, -1)] + Q
+    Q = [(0, -1, -1, -1, -1)] + Q
 
-    for k, (y2, x1, x4) in tqdm(list(enumerate(Q))):
+    for k, (y2, x1, x4, y1, y4) in tqdm(list(enumerate(Q))):
         if k > 0:
             x2 = (x1+x4)/2
-            e1 = x2e[x1]
-            e2 = x2e[x4]
+            e1 = xy2e[(x1, y1)]
+            e2 = xy2e[(x4, y4)]
 
-            for x in e2x[e1]:
-                for i in x2i[x]:
-                    x2i[x2].append(i)
+            for xy in e2xy[e1]:
+                for i in xy2i[xy]:
+                    xy2i[(x2, y2)].append(i)
 
-            for x in e2x[e2]:
-                e2x[e1].append(x)
-                for i in x2i[x]:
-                    x2i[x2].append(i)
+            for xy in e2xy[e2]:
+                e2xy[e1].append(xy)
+                for i in xy2i[xy]:
+                    xy2i[(x2, y2)].append(i)
                     i2e[i] = e1
 
-            x2e[x2] = e1
-            e2x[e1].append(x2)
+            xy2e[(x2, y2)] = e1
+            e2xy[e1].append((x2, y2))
 
         fig = plt.figure(figsize=(15, 15))
         for i in range(n):
