@@ -123,7 +123,7 @@ def main():
                     i2e[i] = e1
 
             x2e[x2] = e1
-            e2x[e1].append((x2, y2))
+            e2x[e1].append(x2)
 
         fig = plt.figure(figsize=(15, 15))
         for i in range(n):
