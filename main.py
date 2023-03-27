@@ -114,7 +114,7 @@ def main():
 
             for x in e2x[e1]:
                 for i in x2i[x]:
-                    x2i[(x2, y2)].append(i)
+                    x2i[x2].append(i)
 
             for x in e2x[e2]:
                 e2x[e1].append(x)
